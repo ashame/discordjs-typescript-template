@@ -1,0 +1,20 @@
+name: Test
+on: [push, pull_request]
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Setup node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+        cache: 'npm'
+    - name: Install packages
+      run: npm ci
+    - name: Build project
+      run: npm run build:ts
+    - name: Run tests
+      run: npm test
