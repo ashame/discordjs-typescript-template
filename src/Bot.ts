@@ -5,6 +5,12 @@ import EventEmitter from 'events';
 import { verbose as log, error, info } from 'npmlog';
 import Handler from './handlers/Handler';
 
+const DEFAULT_CONFIG: BotOptions = Object.freeze(require('../defaultConfig.json'));
+
+export interface BotOptions {
+    desuId: string;
+}
+
 interface Events {
     ready: () => void;
 }
@@ -20,9 +26,10 @@ class Bot extends EventEmitter {
     private loggedIn: boolean = false;
     private readonly handlers: Handler[];
     private readonly token: string;
+    readonly config: BotOptions;
     readonly client: Client;
 
-    constructor(token: string) {
+    constructor(token: string, options?: BotOptions) {
         super();
         this.client = new Client({
             intents: [
@@ -35,7 +42,10 @@ class Bot extends EventEmitter {
         });
         this.handlers = [];
         this.client.once('ready', this.initialize);
+
         this.token = token;
+        this.config = Object.assign({}, DEFAULT_CONFIG, options);
+        log('bot', `${options ? 'Custom' : 'Default'} config options loaded`);
 
         process.on('SIGINT', () => this.destructor());
         process.on('exit', () => this.destructor());
