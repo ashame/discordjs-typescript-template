@@ -16,6 +16,17 @@
 
 ### 🏠 [Homepage](https://github.com/ashame/discordjs-typescript-template#readme)
 
+## Prerequisites
+
+- A Discord OAuth token must first be generated for a bot - this can be done from the [Discord Developer Portal](https://discordapp.com/developers/applications/)
+
+## Environment Variables
+
+| key       | value                                         |
+|-----------|-----------------------------------------------|
+| TOKEN     | (required) Discord OAuth Token                |
+| LOG_LEVEL | (optional) log level to output - see '[npmlog](https://www.npmjs.com/package/npmlog)' |
+
 ## Install
 
 ```sh
