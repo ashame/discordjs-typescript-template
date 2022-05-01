@@ -1,8 +1,8 @@
 {
-  "name": "avgcold",
+  "name": "discordjs-typescript-template",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "prebuild": "npm run clean",
     "build": "npm run build:ts && npm run test",
@@ -24,15 +24,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ashame/avgcold.git"
+    "url": "git+https://github.com/ashame/discordjs-typescript-template.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ashame/avgcold/issues"
+    "url": "https://github.com/ashame/discordjs-typescript-template/issues"
   },
-  "homepage": "https://github.com/ashame/avgcold#readme",
+  "homepage": "https://github.com/ashame/discordjs-typescript-template#readme",
   "devDependencies": {
     "@types/jest": "^27.4.1",
     "@types/node": "^17.0.29",
