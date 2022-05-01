@@ -4,12 +4,7 @@ import { join } from 'path';
 import EventEmitter from 'events';
 import { verbose as log, error, info } from 'npmlog';
 import Handler from './handlers/Handler';
-
-const DEFAULT_CONFIG: BotOptions = Object.freeze(require('../defaultConfig.json'));
-
-export interface BotOptions {
-    desuId: string;
-}
+import BotOptions, { defaults as DEFAULT_CONFIG } from './BotOptions';
 
 interface Events {
     ready: () => void;
@@ -47,8 +42,8 @@ class Bot extends EventEmitter {
         this.config = Object.assign({}, DEFAULT_CONFIG, options);
         log('bot', `${options ? 'Custom' : 'Default'} config options loaded`);
 
-        process.on('SIGINT', () => this.destructor());
-        process.on('exit', () => this.destructor());
+        process.on('SIGINT', this.destructor);
+        process.on('exit', this.destructor);
     }
 
     destructor = () => {
@@ -59,6 +54,8 @@ class Bot extends EventEmitter {
             else
                 log('bot', `failed to deregister handler ${handler.constructor.name}`);
         }
+        process.off('SIGINT', this.destructor);
+        process.off('exit', this.destructor);
         process.exit(0);
     }
 
@@ -75,7 +72,7 @@ class Bot extends EventEmitter {
                     handler.register() && this.handlers.push(handler);
                 };
             } catch (e) {
-                error('bot', `error loading handler for file ${fileName}`, e);
+                error('bot', `error loading handler for file ${fileName}: ${e}`);
             }
         }
         log('bot', `loaded ${this.handlers.length} handlers`);
@@ -89,7 +86,11 @@ class Bot extends EventEmitter {
 
     login = async () => {
         if (this.loggedIn) return true;
-        await this.client.login(this.token);
+        try {
+            await this.client.login(this.token);
+        } catch {
+            return false;
+        }
         return (this.loggedIn = true);
     }
 }
